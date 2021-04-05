@@ -1,9 +1,9 @@
-import 'dart:ui';
-
-import 'package:corona_virus_tracker/constants.dart';
-import 'package:corona_virus_tracker/waiting.dart';
+import 'package:corona_virus_tracker/screens/advanced_search_viewer.dart';
+import 'package:corona_virus_tracker/screens/fine_tuned_search_page.dart';
+import 'package:corona_virus_tracker/utils/constants.dart';
+import 'package:corona_virus_tracker/screens/waiting.dart';
 import 'package:flutter/material.dart';
-import 'getter.dart';
+import 'screens/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,24 +16,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/home': (context) => HomePage(),
-        // '/second': (context) => SecondScreen(),
+        InitPage.id: (context) => InitPage(),
+        FineTunedSearch.id: (context) => FineTunedSearch(),
+        HomePage.id: (context) => HomePage(),
+        AdvancedSearchViewer.id: (context) => AdvancedSearchViewer(),
       },
       title: 'COVID 19 Tracker',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
-      home: HomePage(),
+      home: InitPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class InitPage extends StatefulWidget {
+  static String id = 'init_page';
   @override
-  _HomePageState createState() => _HomePageState();
+  _InitPageState createState() => _InitPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _InitPageState extends State<InitPage> {
   @override
   void initState() {
     // setState(() {
