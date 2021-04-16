@@ -1,11 +1,15 @@
-import 'package:corona_virus_tracker/screens/advanced_search_viewer.dart';
+import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
+import 'package:corona_virus_tracker/screens/advanced_tile_viewer.dart';
+import 'package:corona_virus_tracker/screens/bottomBarPage.dart';
 import 'package:corona_virus_tracker/screens/home.dart';
+import 'package:corona_virus_tracker/screens/tile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'constants.dart';
+import 'conveniences..dart';
 
 class Networker {
   String yesterdayUrl =
@@ -41,26 +45,27 @@ class Networker {
     print('Requesting for: ${mode == false ? yesterdayUrl : dayBeforeUrl}');
     await getData(mode);
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return HomePage(
-              // carryForward: mode,
-              // date: date,
-              // active: active,
-              // deaths: deaths,
-              // fatalityRate: fatalityRate,
-              // lastUpdate: lastUpdate,
-              // recovered: recovered,
-              // confirmed: confirmed,
-              // activeDff: activeDiff,
-              // recovDiff: recovDiff,
-              // deathDiff: deathDiff,
-              );
-        },
-      ),
-    );
+    tileMode
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return
+                    // BottomBarPage();
+                    TileView();
+              },
+            ),
+          )
+        : Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return
+                    // BottomBarPage();
+                    HomePage();
+              },
+            ),
+          );
   }
 
   Future<void> refresh({BuildContext context, bool mode}) async {
@@ -92,21 +97,25 @@ class Networker {
 
       print('$state on $dateToGet');
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (ctx) => AdvancedSearchViewer(
-            resultDate: dateToGet,
-            resultState: state,
-          ),
-        ),
-      );
-
-      // Navigator.pushNamed(
-      //   context,
-      //   AdvancedSearchViewer.id,
-      //   arguments: {state, dateToGet},
-      // );
+      tileMode
+          ? Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => AdvancedTileViewer(
+                  resultDate: dateToGet,
+                  resultState: state,
+                ),
+              ),
+            )
+          : Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => AdvancedCardViewer(
+                  resultDate: dateToGet,
+                  resultState: state,
+                ),
+              ),
+            );
     } else {
       print('There was an error, the code was ${data.statusCode}');
       infoDialog(

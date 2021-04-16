@@ -1,33 +1,33 @@
 import 'dart:ui';
+import 'package:corona_virus_tracker/utils/conveniences..dart';
 import 'package:intl/intl.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sliding_switch/sliding_switch.dart';
 import '../utils/constants.dart';
 
 // ignore: must_be_immutable
-class AdvancedSearchViewer extends StatefulWidget {
+class AdvancedCardViewer extends StatefulWidget {
   static String id = 'advanced_viewer';
 
   String resultState;
   String resultDate;
 
-  AdvancedSearchViewer({
+  AdvancedCardViewer({
     this.resultState,
     this.resultDate,
   });
 
   @override
-  _AdvancedSearchViewerState createState() => _AdvancedSearchViewerState();
+  _AdvancedCardViewerState createState() => _AdvancedCardViewerState();
 }
 
-class _AdvancedSearchViewerState extends State<AdvancedSearchViewer> {
+class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
   Networker instance = Networker();
 
   Color standardBlue = Colors.indigo[900];
 
-  var _formatter = NumberFormat('#,##,000');
+  // var _formatter = NumberFormat('#,##,000');
 
   @override
   Widget build(BuildContext context) {
@@ -104,19 +104,19 @@ class _AdvancedSearchViewerState extends State<AdvancedSearchViewer> {
                         ),
                         Element(
                           title: 'Confirmed ',
-                          data: _formatter.format(confirmed).toString(),
+                          data: commaFormatter(confirmed),
                         ),
                         Element(
                           title: 'Active',
-                          data: _formatter.format(active).toString(),
+                          data: commaFormatter(active),
                         ),
                         Element(
                           title: 'Deaths',
-                          data: _formatter.format(deaths).toString(),
+                          data: commaFormatter(deaths),
                         ),
                         Element(
                           title: 'Recovered',
-                          data: _formatter.format(recovered).toString(),
+                          data: commaFormatter(recovered),
                         ),
                         Element(
                           title: 'Fatality Rate',
@@ -124,15 +124,15 @@ class _AdvancedSearchViewerState extends State<AdvancedSearchViewer> {
                         ),
                         Element(
                           title: 'Active Diff',
-                          data: _formatter.format(activeDiff).toString(),
+                          data: commaFormatter(activeDiff),
                         ),
                         Element(
                           title: 'Death Diff',
-                          data: _formatter.format(deathDiff).toString(),
+                          data: commaFormatter(deathDiff),
                         ),
                         Element(
                           title: 'Recov. Diff ',
-                          data: _formatter.format(recovDiff).toString(),
+                          data: commaFormatter(recovDiff),
                         ),
                       ],
                     ),

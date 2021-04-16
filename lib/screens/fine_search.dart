@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/utils/constants.dart';
+import 'package:corona_virus_tracker/utils/conveniences..dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,26 +21,10 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
 
   String convertDateTimeDisplay(String date) {
     final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
-    // final DateFormat serverFormater = DateFormat('dd-MM-yyyy');
     final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
     final DateTime displayDate = displayFormater.parse(date);
     final String formatted = serverFormater.format(displayDate);
     return formatted;
-  }
-
-  void showSnack(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text),
-        duration: Duration(seconds: 1),
-        // action: SnackBarAction(
-        //   label: 'Action',
-        //   onPressed: () {
-        //     // Code to execute.
-        //   },
-        // ),
-      ),
-    );
   }
 
   void _presentDatePicker() {
@@ -184,9 +169,9 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
               color: Colors.indigo[900],
               onPressed: () {
                 if (buttonText == 'Pick a date') {
-                  showSnack('Pick a date first');
+                  showSnack(context, 'Pick a date first');
                 } else {
-                  showSnack('Hold on...');
+                  showSnack(context, 'Hold on...');
                   try {
                     getter.fineTunedUrlSearch(
                       context,
