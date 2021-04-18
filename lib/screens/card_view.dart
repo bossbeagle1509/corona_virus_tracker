@@ -1,21 +1,23 @@
 import 'dart:ui';
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/utils/conveniences..dart';
 import 'package:intl/intl.dart';
 import 'package:corona_virus_tracker/utils/drawer.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sliding_switch/sliding_switch.dart';
 import '../utils/constants.dart';
 
-class HomePage extends StatefulWidget {
+class CardView extends StatefulWidget {
   static String id = 'home';
   @override
-  _HomePageState createState() => _HomePageState();
+  _CardViewState createState() => _CardViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CardViewState extends State<CardView> {
   Networker instance = Networker();
 
   Color standardBlue = Colors.indigo[900];
@@ -25,11 +27,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _appSettings = Provider.of<AppSettings>(context);
     return Scaffold(
       backgroundColor: Colors.cyan,
       drawer: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: Colors.grey[200],
+          canvasColor: _appSettings.theme,
         ),
         child: NavDrawer(),
       ), // replaced in favour of custom drawer icon
@@ -191,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    commaFormatter(confirmed),
+                                    _appSettings.customDataFormatter(confirmed),
                                     style: kData.copyWith(fontSize: 19),
                                   ),
                                 ],
@@ -208,15 +211,15 @@ class _HomePageState extends State<HomePage> {
                           // ),
                           Element(
                             title: 'Active',
-                            data: commaFormatter(active),
+                            data: _appSettings.customDataFormatter(active),
                           ),
                           Element(
                             title: 'Deaths',
-                            data: commaFormatter(deaths),
+                            data: _appSettings.customDataFormatter(deaths),
                           ),
                           Element(
                             title: 'Recovered',
-                            data: commaFormatter(recovered),
+                            data: _appSettings.customDataFormatter(recovered),
                           ),
                           Element(
                             title: 'Fatality Rate',
@@ -224,15 +227,15 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Element(
                             title: 'Active Diff',
-                            data: commaFormatter(activeDiff),
+                            data: _appSettings.customDataFormatter(activeDiff),
                           ),
                           Element(
                             title: 'Death Diff',
-                            data: commaFormatter(deathDiff),
+                            data: _appSettings.customDataFormatter(deathDiff),
                           ),
                           Element(
                             title: 'Recov. Diff ',
-                            data: commaFormatter(recovDiff),
+                            data: _appSettings.customDataFormatter(recovDiff),
                           ),
                         ],
                       ),

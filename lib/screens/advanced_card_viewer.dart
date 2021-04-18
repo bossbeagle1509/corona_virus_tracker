@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/utils/conveniences..dart';
 import 'package:intl/intl.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../utils/constants.dart';
 
 // ignore: must_be_immutable
@@ -31,6 +33,7 @@ class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
 
   @override
   Widget build(BuildContext context) {
+    final _appSettings = Provider.of<AppSettings>(context);
     return Scaffold(
       backgroundColor: Colors.cyan,
       appBar: AppBar(
@@ -104,19 +107,19 @@ class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
                         ),
                         Element(
                           title: 'Confirmed ',
-                          data: commaFormatter(confirmed),
+                          data: _appSettings.customDataFormatter(confirmed),
                         ),
                         Element(
                           title: 'Active',
-                          data: commaFormatter(active),
+                          data: _appSettings.customDataFormatter(active),
                         ),
                         Element(
                           title: 'Deaths',
-                          data: commaFormatter(deaths),
+                          data: _appSettings.customDataFormatter(deaths),
                         ),
                         Element(
                           title: 'Recovered',
-                          data: commaFormatter(recovered),
+                          data: _appSettings.customDataFormatter(recovered),
                         ),
                         Element(
                           title: 'Fatality Rate',
@@ -124,15 +127,15 @@ class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
                         ),
                         Element(
                           title: 'Active Diff',
-                          data: commaFormatter(activeDiff),
+                          data: _appSettings.customDataFormatter(activeDiff),
                         ),
                         Element(
                           title: 'Death Diff',
-                          data: commaFormatter(deathDiff),
+                          data: _appSettings.customDataFormatter(deathDiff),
                         ),
                         Element(
                           title: 'Recov. Diff ',
-                          data: commaFormatter(recovDiff),
+                          data: _appSettings.customDataFormatter(recovDiff),
                         ),
                       ],
                     ),

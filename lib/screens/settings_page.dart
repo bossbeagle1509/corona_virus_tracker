@@ -1,7 +1,9 @@
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/utils/constants.dart';
 import 'package:corona_virus_tracker/utils/conveniences..dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -14,8 +16,10 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final _appSettings = Provider.of<AppSettings>(context);
+
     return Scaffold(
-      backgroundColor: theme,
+      backgroundColor: _appSettings.theme,
       appBar: AppBar(
         backgroundColor: Colors.greenAccent[400],
         title: Text('Settings'),
@@ -35,9 +39,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Text(
                     'Lazy Mode',
                     style: TextStyle(
-                      color: textColorMode,
+                      color: _appSettings.textColorMode,
                       fontWeight: FontWeight.bold,
-                      fontSize: 40,
+                      fontSize: 35,
                     ),
                   ),
                 ),
@@ -59,18 +63,23 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   activeColor: Colors.greenAccent,
                   inactiveColor: Color(0xFF54C5F8),
-                  value: lazyMode,
+                  value: _appSettings.lazyMode,
                   onToggle: (value) async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setBool('lazyMode', value);
                     print('Entry made');
-                    setState(() {
-                      lazyMode = value;
-                    });
+
+                    _appSettings.toggleLazyMode();
+
+                    // setState(() {
+                    //   _appSettings.lazyMode = value;
+                    // });
 
                     showSnack(
                       context,
-                      lazyMode == true ? 'Lazy mode on' : 'Lazy mode off',
+                      _appSettings.lazyMode == true
+                          ? 'Lazy mode on'
+                          : 'Lazy mode off',
                     );
                   },
                 ),
@@ -86,11 +95,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   onTap: () => infoDialog(
                       context, 'Switches between tile UI and card UI.', 'Info'),
                   child: Text(
-                    'Card Mode',
+                    'Display Mode',
                     style: TextStyle(
-                      color: textColorMode,
+                      color: _appSettings.textColorMode,
                       fontWeight: FontWeight.bold,
-                      fontSize: 40,
+                      fontSize: 35,
                     ),
                   ),
                 ),
@@ -112,21 +121,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   activeColor: Colors.greenAccent,
                   inactiveColor: Color(0xFF54C5F8),
-                  value: tileMode,
+                  value: _appSettings.displayMode,
                   onToggle: (value) async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setBool('tileMode', value);
                     print('Entry made');
-                    setState(() {
-                      tileMode = value;
-                    });
 
+                    _appSettings.toggleDisplayMode();
                     showSnack(
-                      context,
-                      tileMode == true
-                          ? 'Restart app to see tile UI'
-                          : 'Restart app to see card UI',
-                    );
+                        context,
+                        _appSettings.displayMode
+                            ? 'Switched to tile UI'
+                            : 'Switched to card UI');
                   },
                 ),
               ],
@@ -139,7 +145,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 width: 100.0,
                 height: 55.0,
                 toggleSize: 45.0,
-                value: darkMode,
+                value: _appSettings.darkMode,
                 borderRadius: 30.0,
                 padding: 2.0,
                 // activeToggleColor: Color(0xFF0082C8),
@@ -165,18 +171,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 onToggle: (val) async {
                   final prefs = await SharedPreferences.getInstance();
-                  setState(() {
-                    theme == light ? theme = dark : theme = light;
-                    theme == light
-                        ? textColorMode = Colors.black
-                        : textColorMode = Colors.white;
-                    darkMode = val;
-                  });
-                  await prefs.setString('mode', theme.toString());
+                  _appSettings.toggleDarkMode();
+                  print('saving theme as ${_appSettings.theme.toString()}');
+                  await prefs.setString('mode', _appSettings.theme.toString());
                   print('Entry made');
                   showSnack(
                     context,
-                    darkMode == true ? 'Dark mode on' : 'Dark mode off',
+                    _appSettings.darkMode == true
+                        ? 'Dark mode on'
+                        : 'Dark mode off',
                   );
                 },
               ),
@@ -187,7 +190,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 'Tap on a switch title for more info',
                 style: TextStyle(
                   fontSize: 15,
-                  color: theme == dark ? light : dark,
+                  color: _appSettings.textColorMode,
                 ),
               ),
             )

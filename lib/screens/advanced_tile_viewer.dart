@@ -1,11 +1,9 @@
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/custom_tile.dart';
 import 'package:corona_virus_tracker/utils/constants.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
-import 'package:corona_virus_tracker/utils/drawer.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:sliding_switch/sliding_switch.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class AdvancedTileViewer extends StatefulWidget {
@@ -31,8 +29,10 @@ class _AdvancedTileViewerState extends State<AdvancedTileViewer> {
 
     bool selState = false;
 
+    final _appSettings = Provider.of<AppSettings>(context);
+
     return Scaffold(
-      backgroundColor: theme,
+      backgroundColor: _appSettings.theme,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.greenAccent[400],
@@ -65,33 +65,33 @@ class _AdvancedTileViewerState extends State<AdvancedTileViewer> {
                     ),
                     CustomTile(
                       title: 'Confirmed',
-                      content: customDataFormatter(confirmed),
+                      content: _appSettings.customDataFormatter(confirmed),
                       // content: _formatter.format(confirmed).toString(),
                       backgroundColor: Colors.orangeAccent,
                     ),
                     CustomTile(
                       title: 'Active',
-                      content: customDataFormatter(active),
+                      content: _appSettings.customDataFormatter(active),
                       backgroundColor: Colors.purpleAccent,
                     ),
                     CustomTile(
                       title: 'Deaths',
-                      content: customDataFormatter(deaths),
+                      content: _appSettings.customDataFormatter(deaths),
                       backgroundColor: Colors.red,
                     ),
                     CustomTile(
                       title: 'Death Diff.',
-                      content: customDataFormatter(deathDiff),
+                      content: _appSettings.customDataFormatter(deathDiff),
                       backgroundColor: Colors.indigoAccent,
                     ),
                     CustomTile(
                       title: 'Recovered',
-                      content: customDataFormatter(recovered),
+                      content: _appSettings.customDataFormatter(recovered),
                       backgroundColor: Colors.lightBlueAccent[400],
                     ),
                     CustomTile(
                       title: 'Recov. Diff',
-                      content: customDataFormatter(recovDiff),
+                      content: _appSettings.customDataFormatter(recovDiff),
                       backgroundColor: Colors.teal,
                     ),
                     CustomTile(
@@ -101,7 +101,7 @@ class _AdvancedTileViewerState extends State<AdvancedTileViewer> {
                     ),
                     CustomTile(
                       title: 'Active Diff.',
-                      content: customDataFormatter(activeDiff),
+                      content: _appSettings.customDataFormatter(activeDiff),
                       backgroundColor: Colors.pinkAccent,
                     ),
                   ],

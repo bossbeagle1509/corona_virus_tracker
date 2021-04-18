@@ -29,13 +29,3 @@ int confirmed;
 int deathDiff;
 int activeDiff;
 int recovDiff;
-
-bool lazyMode = false;
-bool darkMode = false;
-bool tileMode = false;
-
-Color light = Colors.white;
-Color dark = Colors.grey[800];
-Color textColorMode;
-
-Color theme;

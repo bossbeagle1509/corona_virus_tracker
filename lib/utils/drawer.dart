@@ -1,9 +1,11 @@
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/fine_search.dart';
 import 'package:corona_virus_tracker/screens/settings_page.dart';
 import 'package:corona_virus_tracker/screens/tile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'conveniences..dart';
 
@@ -17,6 +19,8 @@ class _NavDrawerState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final _appSettings = Provider.of<AppSettings>(context);
+
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.only(top: 50.0),
@@ -30,7 +34,10 @@ class _NavDrawerState extends State<NavDrawer> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Covid 19 Tracker',
-                      style: controlledDrawerStyle(fontSize: 25),
+                      style: controlledDrawerStyle(
+                        textColor: _appSettings.light,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
                   Align(
@@ -53,12 +60,13 @@ class _NavDrawerState extends State<NavDrawer> {
             ListTile(
               leading: Icon(
                 Icons.search,
-                color: dark,
+                color: _appSettings.textColorMode,
                 size: 35,
               ),
               title: Text(
                 'Advanced Search',
-                style: controlledDrawerStyle(textColor: dark, fontSize: 19),
+                style: controlledDrawerStyle(
+                    textColor: _appSettings.textColorMode, fontSize: 19),
               ),
               onTap: () {
                 Navigator.pushNamed(
@@ -67,30 +75,16 @@ class _NavDrawerState extends State<NavDrawer> {
                 );
               },
             ),
-            // ListTile(
-            //   leading: Icon(
-            //     Icons.fiber_new,
-            //     color: dark,
-            //     size: 35,
-            //   ),
-            //   title: Text(
-            //     'Experimental View',
-            //     style: controlledDrawerStyle(textColor: dark, fontSize: 19),
-            //   ),
-            //   onTap: () {
-            //     Navigator.pushNamed(context, TileView.id);
-            //   },
-            // ),
             ListTile(
               leading: Icon(
                 Icons.settings,
-                color: dark,
-                // color: theme == dark ? Colors.white60 : Colors.grey[600],
+                color: _appSettings.textColorMode,
                 size: 35,
               ),
               title: Text(
                 'Settings',
-                style: controlledDrawerStyle(textColor: dark, fontSize: 19),
+                style: controlledDrawerStyle(
+                    textColor: _appSettings.textColorMode, fontSize: 19),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -100,12 +94,13 @@ class _NavDrawerState extends State<NavDrawer> {
             ListTile(
               leading: Icon(
                 Icons.info_outline,
-                color: dark,
+                color: _appSettings.textColorMode,
                 size: 35,
               ),
               title: Text(
                 'About',
-                style: controlledDrawerStyle(textColor: dark, fontSize: 19),
+                style: controlledDrawerStyle(
+                    textColor: _appSettings.textColorMode, fontSize: 19),
               ),
               onTap: () {
                 infoDialog(
@@ -123,6 +118,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 child: IconButton(
                   icon: FaIcon(
                     FontAwesomeIcons.github,
+                    color: _appSettings.textColorMode,
                     size: 35,
                   ),
                   onPressed: () => launchURL(

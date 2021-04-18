@@ -1,11 +1,14 @@
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
 import 'package:corona_virus_tracker/screens/advanced_tile_viewer.dart';
 import 'package:corona_virus_tracker/screens/bottomBarPage.dart';
-import 'package:corona_virus_tracker/screens/home.dart';
+import 'package:corona_virus_tracker/screens/card_view.dart';
+import 'package:corona_virus_tracker/screens/crossroads.dart';
 import 'package:corona_virus_tracker/screens/tile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import 'constants.dart';
@@ -43,29 +46,30 @@ class Networker {
 
   void handler({BuildContext context, bool mode}) async {
     print('Requesting for: ${mode == false ? yesterdayUrl : dayBeforeUrl}');
+
     await getData(mode);
 
-    tileMode
-        ? Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return
-                    // BottomBarPage();
-                    TileView();
-              },
-            ),
-          )
-        : Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return
-                    // BottomBarPage();
-                    HomePage();
-              },
-            ),
-          );
+    Navigator.pushNamed(context, CrossRoads.id);
+
+    // _appSettings.displayMode
+    //     ? Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) {
+    //             return
+    //                 TileView();
+    //           },
+    //         ),
+    //       )
+    //     : Navigator.pushReplacement(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) {
+    //             return
+    //                 CardView();
+    //           },
+    //         ),
+    //       );
   }
 
   Future<void> refresh({BuildContext context, bool mode}) async {
@@ -74,6 +78,8 @@ class Networker {
 
   Future<void> fineTunedUrlSearch(
       BuildContext context, String dateToGet, String state) async {
+    final _appSettings = Provider.of<AppSettings>(context, listen: false);
+
     String finalUrl =
         'https://covid-api.com/api/reports?date=$dateToGet&q=India&iso=IND&region_province=$state';
 
@@ -97,7 +103,7 @@ class Networker {
 
       print('$state on $dateToGet');
 
-      tileMode
+      _appSettings.displayMode
           ? Navigator.push(
               context,
               MaterialPageRoute(

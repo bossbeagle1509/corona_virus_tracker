@@ -1,4 +1,6 @@
+import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
+import 'package:corona_virus_tracker/screens/crossroads.dart';
 import 'package:corona_virus_tracker/screens/fine_search.dart';
 import 'package:corona_virus_tracker/screens/settings_page.dart';
 import 'package:corona_virus_tracker/screens/tile_view.dart';
@@ -6,7 +8,8 @@ import 'package:corona_virus_tracker/utils/constants.dart';
 import 'package:corona_virus_tracker/screens/waiting.dart';
 import 'package:corona_virus_tracker/utils/conveniences..dart';
 import 'package:flutter/material.dart';
-import 'screens/home.dart';
+import 'package:provider/provider.dart';
+import 'screens/card_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,22 +19,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        InitPage.id: (context) => InitPage(),
-        FineTunedSearch.id: (context) => FineTunedSearch(),
-        HomePage.id: (context) => HomePage(),
-        AdvancedCardViewer.id: (context) => AdvancedCardViewer(),
-        TileView.id: (context) => TileView(),
-        SettingsPage.id: (context) => SettingsPage(),
-      },
-      title: 'COVID 19 Tracker',
-      theme: ThemeData(
-        primaryColor: Colors.indigo[900],
-        accentColor: Colors.white,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => AppSettings(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          InitPage.id: (context) => InitPage(),
+          FineTunedSearch.id: (context) => FineTunedSearch(),
+          CardView.id: (context) => CardView(),
+          AdvancedCardViewer.id: (context) => AdvancedCardViewer(),
+          TileView.id: (context) => TileView(),
+          SettingsPage.id: (context) => SettingsPage(),
+          CrossRoads.id: (context) => CrossRoads(),
+        },
+        title: 'COVID 19 Tracker',
+        theme: ThemeData(
+          primaryColor: Colors.indigo[900],
+          accentColor: Colors.white,
+        ),
+        home: InitPage(),
       ),
-      home: InitPage(),
     );
   }
 }
