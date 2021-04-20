@@ -1,10 +1,11 @@
-import 'package:corona_virus_tracker/utils/constants.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
+import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class FineTunedSearch extends StatefulWidget {
   static String id = 'fine_tuned_page';
@@ -56,6 +57,8 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: Colors.cyan,
       appBar: AppBar(
@@ -178,7 +181,7 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
                       buttonText,
                       _state,
                     );
-                  } on Exception catch (e) {
+                  } on Exception catch (_) {
                     infoDialog(
                         context,
                         'Something went wrong :( Try another date, maybe there\'s no data for that particular date.',

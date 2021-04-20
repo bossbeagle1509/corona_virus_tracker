@@ -1,7 +1,7 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/custom_tile.dart';
 import 'package:corona_virus_tracker/utils/constants.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
+import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/drawer.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/material.dart';

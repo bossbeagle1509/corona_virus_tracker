@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:corona_virus_tracker/providers/appSettings.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
+import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:intl/intl.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';

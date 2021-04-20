@@ -4,14 +4,14 @@ import 'package:corona_virus_tracker/screens/tile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CrossRoads extends StatefulWidget {
+class UIBuilder extends StatefulWidget {
   static String id = 'cross_roads';
 
   @override
-  _CrossRoadsState createState() => _CrossRoadsState();
+  _UIBuilderState createState() => _UIBuilderState();
 }
 
-class _CrossRoadsState extends State<CrossRoads> {
+class _UIBuilderState extends State<UIBuilder> {
   @override
   Widget build(BuildContext context) {
     final _appSettings = Provider.of<AppSettings>(context);

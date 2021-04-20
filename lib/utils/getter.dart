@@ -1,10 +1,7 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
 import 'package:corona_virus_tracker/screens/advanced_tile_viewer.dart';
-import 'package:corona_virus_tracker/screens/bottomBarPage.dart';
-import 'package:corona_virus_tracker/screens/card_view.dart';
-import 'package:corona_virus_tracker/screens/crossroads.dart';
-import 'package:corona_virus_tracker/screens/tile_view.dart';
+import 'package:corona_virus_tracker/screens/uiBuilder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import 'constants.dart';
-import 'conveniences..dart';
+import 'conveniences.dart';
 
 class Networker {
   String yesterdayUrl =
@@ -49,27 +46,7 @@ class Networker {
 
     await getData(mode);
 
-    Navigator.pushNamed(context, CrossRoads.id);
-
-    // _appSettings.displayMode
-    //     ? Navigator.pushReplacement(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: (context) {
-    //             return
-    //                 TileView();
-    //           },
-    //         ),
-    //       )
-    //     : Navigator.pushReplacement(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: (context) {
-    //             return
-    //                 CardView();
-    //           },
-    //         ),
-    //       );
+    Navigator.pushNamed(context, UIBuilder.id);
   }
 
   Future<void> refresh({BuildContext context, bool mode}) async {

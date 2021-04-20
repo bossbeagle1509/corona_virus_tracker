@@ -1,13 +1,10 @@
-import 'dart:ui';
 import 'package:corona_virus_tracker/providers/appSettings.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
-import 'package:intl/intl.dart';
+import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/drawer.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:sliding_switch/sliding_switch.dart';
 import '../utils/constants.dart';
 
@@ -23,19 +20,17 @@ class _CardViewState extends State<CardView> {
   Color standardBlue = Colors.indigo[900];
   bool selState = false;
 
-  var _formatter = NumberFormat('#,##,000');
-
   @override
   Widget build(BuildContext context) {
     final _appSettings = Provider.of<AppSettings>(context);
     return Scaffold(
-      backgroundColor: Colors.cyan,
+      backgroundColor: _appSettings.theme,
       drawer: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: _appSettings.theme,
         ),
         child: NavDrawer(),
-      ), // replaced in favour of custom drawer icon
+      ),
       appBar: AppBar(
         title: Text(
           'COVID 19 Tracker',
@@ -45,10 +40,6 @@ class _CardViewState extends State<CardView> {
         ),
         centerTitle: true,
         backgroundColor: Colors.greenAccent[400],
-        // leading: IconButton(
-        //   icon: Icon(Elusive.globe_alt),
-        //   onPressed: () => Scaffold.of(context).openDrawer(),
-        // ),
         actions: [
           IconButton(
             icon: Icon(
@@ -80,7 +71,6 @@ class _CardViewState extends State<CardView> {
                   onChanged: (bool value) async {
                     setState(() {
                       selState = value;
-                      // urlMode = value;
                     });
                     print('The boolean is now $selState');
                     await instance.refresh(context: context, mode: selState);
@@ -92,7 +82,6 @@ class _CardViewState extends State<CardView> {
                   onTap: (bool value) {
                     setState(() {
                       selState = value;
-                      // urlMode = value;
                     });
                     print('The boolean is now $selState');
                     instance.refresh(context: context, mode: selState);
@@ -102,23 +91,14 @@ class _CardViewState extends State<CardView> {
                   onSwipe: (bool value) async {
                     setState(() {
                       selState = value;
-                      // urlMode = value;
                     });
                     print('The boolean is now $selState');
                     await instance.refresh(context: context, mode: selState);
                     print('Loading new page with $selState mode');
                     setState(() {});
                   },
-                  // onTap: (value) {
-                  //   setState(() {
-                  //     selState = value;
-                  //   });
-                  // },
-                  // onSwipe: (value) {},
                   textOff: "Yesterday",
                   textOn: "Day Before",
-                  // colorOn: Colors.greenAccent[400],
-                  // colorOff: Colors.greenAccent[400],
                   colorOn: Colors.indigo[900],
                   colorOff: Colors.indigo[900],
                   background: const Color(0xffe4e5eb),
@@ -172,10 +152,6 @@ class _CardViewState extends State<CardView> {
                               ),
                             ],
                           ),
-                          // Element(
-                          //   title: 'Updated ',
-                          //   data: widget.lastUpdate,
-                          // ),
                           Element(
                             title: 'Date ',
                             data: date.toString(),
@@ -205,10 +181,6 @@ class _CardViewState extends State<CardView> {
                             width: MediaQuery.of(context).size.width * 0.5,
                             height: MediaQuery.of(context).size.height * 0.05,
                           ),
-                          // Element(
-                          //   title: 'Confirmed ',
-                          //   data: _formatter.format(confirmed).toString(),
-                          // ),
                           Element(
                             title: 'Active',
                             data: _appSettings.customDataFormatter(active),

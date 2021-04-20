@@ -1,20 +1,25 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'constants.dart';
 
 TextStyle controlledDrawerStyle({Color textColor, double fontSize}) {
   return TextStyle(color: textColor ?? Colors.white, fontSize: fontSize ?? 19);
 }
 
 void showSnack(BuildContext context, String text) {
+  final _appSettings = Provider.of<AppSettings>(context, listen: false);
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text),
+      backgroundColor: _appSettings.textColorMode,
+      content: Text(
+        text,
+        style: TextStyle(
+          fontSize: 19,
+          color: _appSettings.theme,
+        ),
+      ),
       duration: Duration(seconds: 1),
     ),
   );
@@ -26,8 +31,6 @@ Future<void> getColorMode(BuildContext context) async {
 
   String inBetween = prefs.getString('mode');
 
-  // print('value of String inBetween is $inBetween');
-
   if (inBetween == null || inBetween.isEmpty) {
     print('No mode found, reverting to light');
     _appSettings.setDarkMode(false);
@@ -36,14 +39,6 @@ Future<void> getColorMode(BuildContext context) async {
   inBetween == 'Color(0xff424242)'
       ? _appSettings.setDarkMode(true)
       : _appSettings.setDarkMode(false);
-
-  // inBetween == 'Color(0xff424242)' ? theme = dark : theme = light;
-  // inBetween == 'Color(0xff424242)' ? darkMode = true : darkMode = false;
-  // inBetween == 'Color(0xff424242)'
-  //     ? textColorMode = Colors.white
-  //     : textColorMode = Colors.black;
-
-  // print('So finally processor function spat out $theme');
 }
 
 Future<void> getLazyMode(BuildContext context) async {
@@ -65,8 +60,6 @@ Future<void> getTileMode(BuildContext context) async {
 
   bool inBetween = prefs.getBool('tileMode');
 
-  // print('value of String inBetween is $inBetween');
-
   if (inBetween == null) {
     print('No mode found, reverting to default');
   }
@@ -74,11 +67,6 @@ Future<void> getTileMode(BuildContext context) async {
   // ignore: unnecessary_statements
   inBetween ? _appSettings.setDisplayMode(true) : null;
 }
-
-// String commaFormatter(int value) {
-//   var _formatter = NumberFormat('#,##,000');
-//   return _formatter.format(value).toString();
-// }
 
 Future<void> infoDialog(BuildContext context, String text, String title) {
   return showDialog(

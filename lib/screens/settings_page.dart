@@ -1,6 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
-import 'package:corona_virus_tracker/utils/constants.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
+import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
@@ -71,10 +70,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
                     _appSettings.toggleLazyMode();
 
-                    // setState(() {
-                    //   _appSettings.lazyMode = value;
-                    // });
-
                     showSnack(
                       context,
                       _appSettings.lazyMode == true
@@ -89,7 +84,6 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 50,
             ),
             Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween, // swapped in favor of Spacer()
               children: [
                 GestureDetector(
                   onTap: () => infoDialog(
@@ -148,20 +142,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 value: _appSettings.darkMode,
                 borderRadius: 30.0,
                 padding: 2.0,
-                // activeToggleColor: Color(0xFF0082C8),
                 inactiveToggleColor: Colors.indigo[900],
-                // inactiveToggleColor: Color(0xFF01579B),
                 activeSwitchBorder: Border.all(
                   color: Colors.greenAccent[400],
-                  // color: Color(0xFF00D2B8),
                   width: 6.0,
                 ),
                 inactiveSwitchBorder: Border.all(
                   color: Colors.indigo[900],
-                  // color: Color(0xFF29B6F6),
                   width: 6.0,
                 ),
-                // activeColor: Color(0xFF55DDCA),
                 activeColor: Colors.greenAccent,
                 inactiveColor: Color(0xFF54C5F8),
                 activeIcon: Icon(Icons.nightlight_round),

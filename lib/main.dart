@@ -1,12 +1,12 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
-import 'package:corona_virus_tracker/screens/crossroads.dart';
+import 'package:corona_virus_tracker/screens/uiBuilder.dart';
 import 'package:corona_virus_tracker/screens/fine_search.dart';
 import 'package:corona_virus_tracker/screens/settings_page.dart';
 import 'package:corona_virus_tracker/screens/tile_view.dart';
 import 'package:corona_virus_tracker/utils/constants.dart';
 import 'package:corona_virus_tracker/screens/waiting.dart';
-import 'package:corona_virus_tracker/utils/conveniences..dart';
+import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/card_view.dart';
@@ -34,12 +34,12 @@ class MyApp extends StatelessWidget {
           AdvancedCardViewer.id: (context) => AdvancedCardViewer(),
           TileView.id: (context) => TileView(),
           SettingsPage.id: (context) => SettingsPage(),
-          CrossRoads.id: (context) => CrossRoads(),
+          UIBuilder.id: (context) => UIBuilder(),
         },
         title: 'COVID 19 Tracker',
         theme: ThemeData(
           primaryColor: Colors.indigo[900],
-          accentColor: Colors.white,
+          accentColor: Colors.greenAccent[400],
         ),
         home: InitPage(),
       ),
@@ -69,9 +69,6 @@ class _InitPageState extends State<InitPage> {
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => print('Post-frame callback is here !'));
-    // .addPostFrameCallback((_) => print(
-    // 'The height is ${MediaQuery.of(context).size.height}'));
-    //
 
     super.initState();
   }

@@ -1,13 +1,11 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
 import 'package:corona_virus_tracker/screens/fine_search.dart';
 import 'package:corona_virus_tracker/screens/settings_page.dart';
-import 'package:corona_virus_tracker/screens/tile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'constants.dart';
-import 'conveniences..dart';
+import 'conveniences.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
