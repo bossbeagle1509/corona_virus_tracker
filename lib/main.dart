@@ -1,10 +1,10 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
 import 'package:corona_virus_tracker/screens/uiBuilder.dart';
 import 'package:corona_virus_tracker/screens/fine_search.dart';
 import 'package:corona_virus_tracker/screens/settings_page.dart';
 import 'package:corona_virus_tracker/screens/tile_view.dart';
-import 'package:corona_virus_tracker/utils/constants.dart';
 import 'package:corona_virus_tracker/screens/waiting.dart';
 import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (ctx) => AppSettings(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => DateStuff(),
         ),
       ],
       child: MaterialApp(
@@ -56,16 +59,10 @@ class InitPage extends StatefulWidget {
 class _InitPageState extends State<InitPage> {
   @override
   void initState() {
-    yesterday =
-        DateTime.now().subtract(Duration(days: 1)).toString().substring(0, 10);
-
-    dayBefore =
-        DateTime.now().subtract(Duration(days: 2)).toString().substring(0, 10);
-    print('Just updated today: $yesterday');
-
     getColorMode(context);
     getLazyMode(context);
     getTileMode(context);
+    getDates(context);
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => print('Post-frame callback is here !'));

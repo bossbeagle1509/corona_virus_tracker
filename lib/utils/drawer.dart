@@ -110,7 +110,7 @@ class _NavDrawerState extends State<NavDrawer> {
             ),
             Spacer(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: IconButton(
@@ -123,7 +123,20 @@ class _NavDrawerState extends State<NavDrawer> {
                       'https://github.com/bossbeagle1509/corona_virus_tracker'),
                 ),
               ),
-            )
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Center(
+                child: Text(
+                  'Version: 1.2.0',
+                  style: controlledDrawerStyle(
+                      textColor: _appSettings.textColorMode, fontSize: 10),
+                ),
+              ),
+            ),
           ],
         ),
       ),

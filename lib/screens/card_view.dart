@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/drawer.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
@@ -23,6 +24,7 @@ class _CardViewState extends State<CardView> {
   @override
   Widget build(BuildContext context) {
     final _appSettings = Provider.of<AppSettings>(context);
+    final _dateStuff = Provider.of<DateStuff>(context);
     return Scaffold(
       backgroundColor: _appSettings.theme,
       drawer: Theme(
@@ -50,7 +52,9 @@ class _CardViewState extends State<CardView> {
             onPressed: () {
               infoDialog(
                 context,
-                'The values, \'Active Diff.\', \'Recov. Diff.\' and \'Death Diff.\' are the number of new active, recovered and death cases respectively, compared to the values on $dayBefore. ',
+                _dateStuff.fancySchistDoneToDates
+                    ? 'The values, \'Active Diff.\', \'Recov. Diff.\' and \'Death Diff.\' are the number of new active, recovered and death cases respectively, compared to the values on ${_dateStuff.dayBefore}. \n\n Why am I seeing data for ${_dateStuff.yesterday} and not ${_dateStuff.actualYesterday}?\n\nThe API provider updates data for the previous day post 11.30 AM IST, and so, until then data for the day before will be displayed.'
+                    : 'The values, \'Active Diff.\', \'Recov. Diff.\' and \'Death Diff.\' are the number of new active, recovered and death cases respectively, compared to the values on ${_dateStuff.dayBefore}. ',
                 'Important',
               );
             },

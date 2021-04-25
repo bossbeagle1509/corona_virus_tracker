@@ -1,6 +1,8 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
 import 'package:corona_virus_tracker/screens/advanced_tile_viewer.dart';
+import 'package:corona_virus_tracker/screens/fine_search.dart';
 import 'package:corona_virus_tracker/screens/uiBuilder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,45 +14,88 @@ import 'constants.dart';
 import 'conveniences.dart';
 
 class Networker {
-  String yesterdayUrl =
-      'https://covid-api.com/api/reports/total?date=$yesterday';
-  String dayBeforeUrl =
-      'https://covid-api.com/api/reports/total?date=$dayBefore';
+  Future<void> getData(BuildContext context, bool mode) async {
+    final _dateStore = Provider.of<DateStuff>(context, listen: false);
+    try {
+      http.Response data = await http.get(
+          mode == false ? _dateStore.yesterdayUrl : _dateStore.dayBeforeUrl);
 
-  Future<void> getData(bool mode) async {
-    http.Response data =
-        await http.get(mode == false ? yesterdayUrl : dayBeforeUrl);
+      // print(jsonDecode(data.body)['data'].toString() == '[]');
 
-    print('Requesting for: ${mode == false ? yesterdayUrl : dayBeforeUrl}');
+      if (jsonDecode(data.body)['data'].toString() == '[]') {
+        print('Not been updated yet,switching dates.');
 
-    if (data.statusCode == 200) {
-      precious = data.body;
+        /// data was null, possibly because the api was not updated
+        /// so change yesterday to day before and then continue
 
-      date = jsonDecode(precious)['data']['date'];
-      deaths = jsonDecode(precious)['data']['deaths'];
-      lastUpdate = jsonDecode(precious)['data']['last_update'];
-      recovered = jsonDecode(precious)['data']['recovered'];
-      active = jsonDecode(precious)['data']['active'];
-      fatalityRate = jsonDecode(precious)['data']['fatality_rate'];
-      confirmed = jsonDecode(precious)['data']['confirmed'];
-      deathDiff = jsonDecode(precious)['data']['deaths_diff'];
-      recovDiff = jsonDecode(precious)['data']['recovered_diff'];
-      activeDiff = jsonDecode(precious)['data']['active_diff'];
-    } else {
-      print(data.statusCode);
+        _dateStore.setYesterdayInProvider(2);
+        _dateStore.setDayBeforeInProvider(3);
+
+        print('Just updated yesterday: ${_dateStore.yesterday}');
+      } else {
+        /// data was not null, proceed as normal
+        print('Dates seem ok.');
+        print(
+            'Requesting for: ${mode == false ? _dateStore.yesterdayUrl : _dateStore.dayBeforeUrl}');
+
+        if (data.statusCode == 200) {
+          precious = data.body;
+
+          date = jsonDecode(precious)['data']['date'];
+          deaths = jsonDecode(precious)['data']['deaths'];
+          lastUpdate = jsonDecode(precious)['data']['last_update'];
+          recovered = jsonDecode(precious)['data']['recovered'];
+          active = jsonDecode(precious)['data']['active'];
+          fatalityRate = jsonDecode(precious)['data']['fatality_rate'];
+          confirmed = jsonDecode(precious)['data']['confirmed'];
+          deathDiff = jsonDecode(precious)['data']['deaths_diff'];
+          recovDiff = jsonDecode(precious)['data']['recovered_diff'];
+          activeDiff = jsonDecode(precious)['data']['active_diff'];
+        } else {
+          print(data.statusCode);
+        }
+      }
+    } on Exception catch (_) {
+      print('Caught an error with the restful api');
+    }
+  }
+
+  Future<void> testModule(BuildContext context, bool mode) async {
+    final _dateStore = Provider.of<DateStuff>(context, listen: false);
+    try {
+      http.Response data = await http.get(
+          mode == false ? _dateStore.yesterdayUrl : _dateStore.dayBeforeUrl);
+
+      // print(jsonDecode(data.body)['data'].toString() == '[]');
+
+      if (jsonDecode(data.body)['data'].toString() == '[]') {
+        /// data was null, possibly because the api was not updated
+        /// so change yesterday to day before and then continue
+
+        print('Not been updated yet,switching dates.');
+        _dateStore.toggleFancySchistDoneToDates();
+        _dateStore.setYesterdayInProvider(2);
+        _dateStore.setDayBeforeInProvider(3);
+        print('Just updated yesterday to ${_dateStore.yesterday}');
+      } else {
+        /// dates are ok just continue
+      }
+
+      await getData(context, mode);
+    } on Exception catch (e) {
+      print('Caught an error with the restful api');
+      print(e.toString());
     }
   }
 
   void handler({BuildContext context, bool mode}) async {
-    print('Requesting for: ${mode == false ? yesterdayUrl : dayBeforeUrl}');
-
-    await getData(mode);
+    await testModule(context, mode);
 
     Navigator.pushNamed(context, UIBuilder.id);
   }
 
   Future<void> refresh({BuildContext context, bool mode}) async {
-    await getData(mode);
+    await getData(context, mode);
   }
 
   Future<void> fineTunedUrlSearch(

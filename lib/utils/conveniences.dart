@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +48,8 @@ Future<void> getLazyMode(BuildContext context) async {
   bool inBetween = prefs.getBool('lazyMode');
 
   if (inBetween == null) {
-    print('No mode found, reverting to default');
+    print('No mode found, reverting to false');
+    inBetween = false;
   }
 
   // ignore: unnecessary_statements
@@ -61,11 +63,21 @@ Future<void> getTileMode(BuildContext context) async {
   bool inBetween = prefs.getBool('tileMode');
 
   if (inBetween == null) {
-    print('No mode found, reverting to default');
+    print('No mode found, reverting to false');
+    inBetween = false;
   }
 
   // ignore: unnecessary_statements
   inBetween ? _appSettings.setDisplayMode(true) : null;
+}
+
+Future<void> getDates(BuildContext context) async {
+  final _dateStore = Provider.of<DateStuff>(context, listen: false);
+
+  _dateStore.getActualYesterday();
+
+  _dateStore.setYesterdayInProvider(1);
+  _dateStore.setDayBeforeInProvider(2);
 }
 
 Future<void> infoDialog(BuildContext context, String text, String title) {

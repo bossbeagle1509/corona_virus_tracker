@@ -1,11 +1,11 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/screens/custom_tile.dart';
 import 'package:corona_virus_tracker/utils/constants.dart';
 import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/drawer.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_switch/sliding_switch.dart';
 
@@ -19,12 +19,12 @@ class TileView extends StatefulWidget {
 class _TileViewState extends State<TileView> {
   @override
   Widget build(BuildContext context) {
-    // var _formatter = NumberFormat('#,##,000');
     Networker instance = Networker();
 
     bool selState = false;
 
     final _appSettings = Provider.of<AppSettings>(context);
+    final _dateStuff = Provider.of<DateStuff>(context);
 
     return Scaffold(
       backgroundColor: _appSettings.theme,
@@ -46,7 +46,9 @@ class _TileViewState extends State<TileView> {
             onPressed: () {
               infoDialog(
                 context,
-                'The values, \'Active Diff.\', \'Recov. Diff.\' and \'Death Diff.\' are the number of new active, recovered and death cases respectively, compared to the values on $dayBefore. ',
+                _dateStuff.fancySchistDoneToDates
+                    ? 'The values, \'Active Diff.\', \'Recov. Diff.\' and \'Death Diff.\' are the number of new active, recovered and death cases respectively, compared to the values on ${_dateStuff.dayBefore}. \n\n Why am I seeing data for ${_dateStuff.yesterday} and not ${_dateStuff.actualYesterday}?\n\nThe API provider updates data for the previous day post 11.30 AM IST, and so, until then data for the day before will be displayed.'
+                    : 'The values, \'Active Diff.\', \'Recov. Diff.\' and \'Death Diff.\' are the number of new active, recovered and death cases respectively, compared to the values on ${_dateStuff.dayBefore}. ',
                 'Important',
               );
             },

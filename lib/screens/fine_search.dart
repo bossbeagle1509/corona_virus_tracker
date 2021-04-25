@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,12 +29,13 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
     return formatted;
   }
 
-  void _presentDatePicker() {
+  void _presentDatePicker(BuildContext context) {
+    final _dateStuff = Provider.of<DateStuff>(context, listen: false);
     showDatePicker(
       context: context,
-      initialDate: DateTime.now().subtract(Duration(days: 1)),
+      initialDate: DateTime.parse(_dateStuff.yesterday),
       firstDate: DateTime(2020, 3),
-      lastDate: DateTime.now().subtract(Duration(days: 1)),
+      lastDate: DateTime.parse(_dateStuff.yesterday),
     ).then(
       (pickedDate) {
         if (pickedDate == null) {
@@ -57,8 +59,6 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Colors.cyan,
       appBar: AppBar(
@@ -114,7 +114,7 @@ class _FineTunedSearchState extends State<FineTunedSearch> {
                   ),
                 ),
               ),
-              onPressed: () => _presentDatePicker(),
+              onPressed: () => _presentDatePicker(context),
             ),
             SizedBox(
               height: 25,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-String yesterday;
-String dayBefore;
+// String yesterday;
+// String dayBefore;
 
 const kTitle = TextStyle(
   fontSize: 22,
