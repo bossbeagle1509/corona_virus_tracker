@@ -66,7 +66,7 @@ class _AdvancedTileViewerState extends State<AdvancedTileViewer> {
                       backgroundColor: Colors.orangeAccent,
                     ),
                     CustomTile(
-                      title: 'Confirm. Diff',
+                      title: 'Confi. Diff',
                       content: _appSettings
                           .customDataFormatter(_dataStore.confirmedDiff),
                       backgroundColor: Colors.orangeAccent,

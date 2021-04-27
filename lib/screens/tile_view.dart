@@ -125,7 +125,7 @@ class _TileViewState extends State<TileView> {
                         backgroundColor: Colors.orangeAccent,
                       ),
                       CustomTile(
-                        title: 'Confirm. Diff',
+                        title: 'Confi. Diff',
                         content: _appSettings
                             .customDataFormatter(_dataStore.confirmedDiff),
                         // content: _formatter.format(confirmed).toString(),

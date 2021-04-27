@@ -25,6 +25,6 @@ ___
 
 ___
 
-# [Download](https://github.com/bossbeagle1509/corona_virus_tracker/releases/tag/v1.0) the apk here !
+# [Download](https://github.com/bossbeagle1509/corona_virus_tracker/releases/) the apk here !
 
 
