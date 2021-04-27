@@ -1,14 +1,24 @@
+import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/material.dart';
 
 class DateStuff with ChangeNotifier {
   String yesterday;
   String dayBefore;
 
+  /// true is global and false is indian
+  bool statsZone = false;
+  bool sliderVal = false;
+
   String actualYesterday;
 
   bool fancySchistDoneToDates = false;
 
-  setYesterdayInProvider(int toSubtract) {
+  void toggleSliderVal() {
+    sliderVal = !sliderVal;
+    notifyListeners();
+  }
+
+  void setYesterdayInProvider(int toSubtract) {
     yesterday = DateTime.now()
         .subtract(Duration(days: toSubtract))
         .toString()
@@ -16,18 +26,18 @@ class DateStuff with ChangeNotifier {
     notifyListeners();
   }
 
-  getActualYesterday() {
+  void getActualYesterday() {
     actualYesterday =
         DateTime.now().subtract(Duration(days: 1)).toString().substring(0, 10);
     notifyListeners();
   }
 
-  toggleFancySchistDoneToDates() {
+  void toggleFancySchistDoneToDates() {
     fancySchistDoneToDates = !fancySchistDoneToDates;
     notifyListeners();
   }
 
-  setDayBeforeInProvider(int toSubtract) {
+  void setDayBeforeInProvider(int toSubtract) {
     dayBefore = DateTime.now()
         .subtract(Duration(days: toSubtract))
         .toString()
@@ -35,11 +45,40 @@ class DateStuff with ChangeNotifier {
     notifyListeners();
   }
 
+  void setStatsZone(bool temp) {
+    statsZone = temp;
+    notifyListeners();
+  }
+
+  void toggleStatsZone(BuildContext context) {
+    Networker networker = Networker();
+    networker.handlerWithoutPush(context: context, mode: false);
+
+    statsZone = !statsZone;
+    notifyListeners();
+  }
+
   Uri get yesterdayUrl {
-    return Uri.parse('https://covid-api.com/api/reports/total?date=$yesterday');
+    if (statsZone) {
+      /// global
+      return Uri.parse(
+          'https://covid-api.com/api/reports/total?date=$yesterday');
+    } else {
+      /// indian
+      return Uri.parse(
+          'https://covid-api.com/api/reports/total?date=$yesterday&iso=IND');
+    }
   }
 
   Uri get dayBeforeUrl {
-    return Uri.parse('https://covid-api.com/api/reports/total?date=$dayBefore');
+    if (statsZone) {
+      /// global
+      return Uri.parse(
+          'https://covid-api.com/api/reports/total?date=$dayBefore');
+    } else {
+      /// indian
+      return Uri.parse(
+          'https://covid-api.com/api/reports/total?date=$dayBefore&iso=IND');
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dataStore.dart';
 import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
 import 'package:corona_virus_tracker/screens/uiBuilder.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => DateStuff(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => DataStore(),
         ),
       ],
       child: MaterialApp(
@@ -63,6 +67,7 @@ class _InitPageState extends State<InitPage> {
     getLazyMode(context);
     getTileMode(context);
     getDates(context);
+    getStatsZone(context);
 
     WidgetsBinding.instance
         .addPostFrameCallback((_) => print('Post-frame callback is here !'));

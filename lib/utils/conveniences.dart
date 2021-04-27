@@ -48,7 +48,7 @@ Future<void> getLazyMode(BuildContext context) async {
   bool inBetween = prefs.getBool('lazyMode');
 
   if (inBetween == null) {
-    print('No mode found, reverting to false');
+    print('No mode found, reverting to default');
     inBetween = false;
   }
 
@@ -63,12 +63,27 @@ Future<void> getTileMode(BuildContext context) async {
   bool inBetween = prefs.getBool('tileMode');
 
   if (inBetween == null) {
-    print('No mode found, reverting to false');
+    print('No mode found, reverting to default');
     inBetween = false;
   }
 
   // ignore: unnecessary_statements
   inBetween ? _appSettings.setDisplayMode(true) : null;
+}
+
+Future<void> getStatsZone(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  final _dateStuff = Provider.of<DateStuff>(context, listen: false);
+
+  bool inBetween = prefs.getBool('statsZone');
+
+  if (inBetween == null) {
+    print('No mode found, reverting to default');
+    inBetween = false;
+  }
+
+  // ignore: unnecessary_statements
+  inBetween ? _dateStuff.setStatsZone(true) : null;
 }
 
 Future<void> getDates(BuildContext context) async {

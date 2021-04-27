@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dataStore.dart';
 import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/utils/conveniences.dart';
 import 'package:corona_virus_tracker/utils/drawer.dart';
@@ -19,12 +20,12 @@ class _CardViewState extends State<CardView> {
   Networker instance = Networker();
 
   Color standardBlue = Colors.indigo[900];
-  bool selState = false;
 
   @override
   Widget build(BuildContext context) {
     final _appSettings = Provider.of<AppSettings>(context);
     final _dateStuff = Provider.of<DateStuff>(context);
+    final _dataStore = Provider.of<DataStore>(context);
     return Scaffold(
       backgroundColor: _appSettings.theme,
       drawer: Theme(
@@ -70,36 +71,29 @@ class _CardViewState extends State<CardView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SlidingSwitch(
-                  value: selState,
+                  value: _dateStuff.sliderVal,
                   width: 250,
                   onChanged: (bool value) async {
-                    setState(() {
-                      selState = value;
-                    });
-                    print('The boolean is now $selState');
-                    await instance.refresh(context: context, mode: selState);
-                    print('Loading new page with $selState mode');
-                    setState(() {});
+                    _dateStuff.toggleSliderVal();
+                    await instance.handlerWithoutPush(
+                        context: context, mode: _dateStuff.sliderVal);
+                    // setState(() {});
                   },
                   height: 55,
                   animationDuration: const Duration(milliseconds: 400),
                   onTap: (bool value) {
                     setState(() {
-                      selState = value;
+                      _dateStuff.toggleSliderVal();
                     });
-                    print('The boolean is now $selState');
-                    instance.refresh(context: context, mode: selState);
-                    print('Loading new page with $selState mode');
-                    setState(() {});
+                    instance.handlerWithoutPush(
+                        context: context, mode: _dateStuff.sliderVal);
+                    // setState(() {});
                   },
                   onSwipe: (bool value) async {
-                    setState(() {
-                      selState = value;
-                    });
-                    print('The boolean is now $selState');
-                    await instance.refresh(context: context, mode: selState);
-                    print('Loading new page with $selState mode');
-                    setState(() {});
+                    _dateStuff.toggleSliderVal();
+                    await instance.handlerWithoutPush(
+                        context: context, mode: _dateStuff.sliderVal);
+                    // setState(() {});
                   },
                   textOff: "Yesterday",
                   textOn: "Day Before",
@@ -142,7 +136,7 @@ class _CardViewState extends State<CardView> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                        lastUpdate,
+                                        _dataStore.lastUpdate,
                                         style: kData.copyWith(fontSize: 13),
                                       ),
                                     ],
@@ -158,14 +152,15 @@ class _CardViewState extends State<CardView> {
                           ),
                           Element(
                             title: 'Date ',
-                            data: date.toString(),
+                            data: _dataStore.date.toString(),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Confirmed: ',
-                                style: kTitle.copyWith(fontSize: 19),
+                                style: kTitle.copyWith(
+                                    fontSize: _appSettings.lazyMode ? 22 : 19),
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.15,
@@ -174,7 +169,8 @@ class _CardViewState extends State<CardView> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    _appSettings.customDataFormatter(confirmed),
+                                    _appSettings.customDataFormatter(
+                                        _dataStore.confirmed),
                                     style: kData.copyWith(fontSize: 19),
                                   ),
                                 ],
@@ -186,32 +182,43 @@ class _CardViewState extends State<CardView> {
                             height: MediaQuery.of(context).size.height * 0.05,
                           ),
                           Element(
+                            title: 'Confirm. Diff.',
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.confirmedDiff),
+                          ),
+                          Element(
                             title: 'Active',
-                            data: _appSettings.customDataFormatter(active),
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.active),
                           ),
                           Element(
                             title: 'Deaths',
-                            data: _appSettings.customDataFormatter(deaths),
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.deaths),
                           ),
                           Element(
                             title: 'Recovered',
-                            data: _appSettings.customDataFormatter(recovered),
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.recovered),
                           ),
                           Element(
                             title: 'Fatality Rate',
-                            data: fatalityRate.toString(),
+                            data: _dataStore.fatalityRate.toString(),
                           ),
                           Element(
                             title: 'Active Diff',
-                            data: _appSettings.customDataFormatter(activeDiff),
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.activeDiff),
                           ),
                           Element(
                             title: 'Death Diff',
-                            data: _appSettings.customDataFormatter(deathDiff),
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.deathDiff),
                           ),
                           Element(
                             title: 'Recov. Diff ',
-                            data: _appSettings.customDataFormatter(recovDiff),
+                            data: _appSettings
+                                .customDataFormatter(_dataStore.recovDiff),
                           ),
                         ],
                       ),

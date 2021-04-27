@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:corona_virus_tracker/providers/appSettings.dart';
-import 'package:corona_virus_tracker/utils/conveniences.dart';
-import 'package:intl/intl.dart';
+import 'package:corona_virus_tracker/providers/dataStore.dart';
 import 'package:corona_virus_tracker/utils/getter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +28,10 @@ class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
 
   Color standardBlue = Colors.indigo[900];
 
-  // var _formatter = NumberFormat('#,##,000');
-
   @override
   Widget build(BuildContext context) {
     final _appSettings = Provider.of<AppSettings>(context);
+    final _dataStore = Provider.of<DataStore>(context);
     return Scaffold(
       backgroundColor: Colors.cyan,
       appBar: AppBar(
@@ -84,7 +82,7 @@ class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
-                                      lastUpdate,
+                                      _dataStore.lastUpdate,
                                       style: kData.copyWith(fontSize: 13),
                                     ),
                                   ],
@@ -103,39 +101,46 @@ class _AdvancedCardViewerState extends State<AdvancedCardViewer> {
                         // ),
                         Element(
                           title: 'Date ',
-                          data: date.toString(),
+                          data: _dataStore.date.toString(),
                         ),
                         Element(
                           title: 'Confirmed ',
-                          data: _appSettings.customDataFormatter(confirmed),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.confirmed),
                         ),
                         Element(
                           title: 'Active',
-                          data: _appSettings.customDataFormatter(active),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.active),
                         ),
                         Element(
                           title: 'Deaths',
-                          data: _appSettings.customDataFormatter(deaths),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.deaths),
                         ),
                         Element(
                           title: 'Recovered',
-                          data: _appSettings.customDataFormatter(recovered),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.recovered),
                         ),
                         Element(
                           title: 'Fatality Rate',
-                          data: fatalityRate.toString(),
+                          data: _dataStore.fatalityRate.toString(),
                         ),
                         Element(
                           title: 'Active Diff',
-                          data: _appSettings.customDataFormatter(activeDiff),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.activeDiff),
                         ),
                         Element(
                           title: 'Death Diff',
-                          data: _appSettings.customDataFormatter(deathDiff),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.deathDiff),
                         ),
                         Element(
                           title: 'Recov. Diff ',
-                          data: _appSettings.customDataFormatter(recovDiff),
+                          data: _appSettings
+                              .customDataFormatter(_dataStore.recovDiff),
                         ),
                       ],
                     ),

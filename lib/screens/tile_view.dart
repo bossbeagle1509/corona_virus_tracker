@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dataStore.dart';
 import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/screens/custom_tile.dart';
 import 'package:corona_virus_tracker/utils/constants.dart';
@@ -21,10 +22,9 @@ class _TileViewState extends State<TileView> {
   Widget build(BuildContext context) {
     Networker instance = Networker();
 
-    bool selState = false;
-
     final _appSettings = Provider.of<AppSettings>(context);
     final _dateStuff = Provider.of<DateStuff>(context);
+    final _dataStore = Provider.of<DataStore>(context);
 
     return Scaffold(
       backgroundColor: _appSettings.theme,
@@ -70,39 +70,27 @@ class _TileViewState extends State<TileView> {
                 Padding(
                   padding: EdgeInsets.all(15.0),
                   child: SlidingSwitch(
-                    value: selState,
+                    value: _dateStuff.sliderVal,
                     width: 250,
                     onChanged: (bool value) async {
-                      setState(() {
-                        selState = value;
-                        // urlMode = value;
-                      });
-                      print('The boolean is now $selState');
-                      await instance.refresh(context: context, mode: selState);
-                      print('Loading new page with $selState mode');
-                      setState(() {});
+                      _dateStuff.toggleSliderVal();
+                      instance.handlerWithoutPush(
+                          context: context, mode: _dateStuff.sliderVal);
+                      // setState(() {});
                     },
                     height: 55,
                     animationDuration: const Duration(milliseconds: 400),
                     onTap: (bool value) {
-                      setState(() {
-                        selState = value;
-                        // urlMode = value;
-                      });
-                      print('The boolean is now $selState');
-                      instance.refresh(context: context, mode: selState);
-                      print('Loading new page with $selState mode');
-                      setState(() {});
+                      _dateStuff.toggleSliderVal();
+                      instance.handlerWithoutPush(
+                          context: context, mode: _dateStuff.sliderVal);
+                      // setState(() {});
                     },
                     onSwipe: (bool value) async {
-                      setState(() {
-                        selState = value;
-                        // urlMode = value;
-                      });
-                      print('The boolean is now $selState');
-                      await instance.refresh(context: context, mode: selState);
-                      print('Loading new page with $selState mode');
-                      setState(() {});
+                      _dateStuff.toggleSliderVal();
+                      instance.handlerWithoutPush(
+                          context: context, mode: _dateStuff.sliderVal);
+                      // setState(() {});
                     },
                     textOff: "Yesterday",
                     textOn: "Day Before",
@@ -120,56 +108,71 @@ class _TileViewState extends State<TileView> {
                     children: [
                       CustomTile(
                         title: 'Updated',
-                        content: lastUpdate,
+                        content: _dataStore.lastUpdate,
                         textSize: 18,
                         backgroundColor: Colors.blueGrey,
                       ),
                       CustomTile(
                         title: 'Date',
-                        content: date,
+                        content: _dataStore.date,
                         backgroundColor: Colors.greenAccent[400],
                       ),
                       CustomTile(
                         title: 'Confirmed',
-                        content: _appSettings.customDataFormatter(confirmed),
+                        content: _appSettings
+                            .customDataFormatter(_dataStore.confirmed),
                         // content: _formatter.format(confirmed).toString(),
                         backgroundColor: Colors.orangeAccent,
                       ),
                       CustomTile(
+                        title: 'Confirm. Diff',
+                        content: _appSettings
+                            .customDataFormatter(_dataStore.confirmedDiff),
+                        // content: _formatter.format(confirmed).toString(),
+                        backgroundColor: Colors.redAccent,
+                      ),
+                      CustomTile(
                         title: 'Active',
-                        content: _appSettings.customDataFormatter(active),
+                        content:
+                            _appSettings.customDataFormatter(_dataStore.active),
                         backgroundColor: Colors.purpleAccent,
                       ),
                       CustomTile(
-                        title: 'Deaths',
-                        content: _appSettings.customDataFormatter(deaths),
-                        backgroundColor: Colors.red,
-                      ),
-                      CustomTile(
-                        title: 'Death Diff.',
-                        content: _appSettings.customDataFormatter(deathDiff),
-                        backgroundColor: Colors.indigoAccent,
+                        title: 'Active Diff.',
+                        content: _appSettings
+                            .customDataFormatter(_dataStore.activeDiff),
+                        backgroundColor: Colors.pinkAccent,
                       ),
                       CustomTile(
                         title: 'Recovered',
-                        content: _appSettings.customDataFormatter(recovered),
+                        content: _appSettings
+                            .customDataFormatter(_dataStore.recovered),
                         backgroundColor: Colors.lightBlueAccent[400],
                       ),
                       CustomTile(
                         title: 'Recov. Diff',
-                        content: _appSettings.customDataFormatter(recovDiff),
+                        content: _appSettings
+                            .customDataFormatter(_dataStore.recovDiff),
                         backgroundColor: Colors.teal,
                       ),
                       CustomTile(
-                        title: 'Death Rate',
-                        content: fatalityRate.toString(),
-                        backgroundColor: Colors.redAccent,
+                        title: 'Deaths',
+                        content:
+                            _appSettings.customDataFormatter(_dataStore.deaths),
+                        backgroundColor: Colors.red,
                       ),
                       CustomTile(
-                        title: 'Active Diff.',
-                        content: _appSettings.customDataFormatter(activeDiff),
-                        backgroundColor: Colors.pinkAccent,
+                        title: 'Death Diff.',
+                        content: _appSettings
+                            .customDataFormatter(_dataStore.deathDiff),
+                        backgroundColor: Colors.indigoAccent,
                       ),
+
+                      // CustomTile(
+                      //   title: 'Death Rate',
+                      //   content: _dataStore.fatalityRate.toString(),
+                      //   backgroundColor: Colors.redAccent,
+                      // ),
                     ],
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,

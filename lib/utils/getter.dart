@@ -1,4 +1,5 @@
 import 'package:corona_virus_tracker/providers/appSettings.dart';
+import 'package:corona_virus_tracker/providers/dataStore.dart';
 import 'package:corona_virus_tracker/providers/dateStuff.dart';
 import 'package:corona_virus_tracker/screens/advanced_card_viewer.dart';
 import 'package:corona_virus_tracker/screens/advanced_tile_viewer.dart';
@@ -10,12 +11,12 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'dart:convert';
 
-import 'constants.dart';
 import 'conveniences.dart';
 
 class Networker {
   Future<void> getData(BuildContext context, bool mode) async {
     final _dateStore = Provider.of<DateStuff>(context, listen: false);
+    final _dataStore = Provider.of<DataStore>(context, listen: false);
     try {
       http.Response data = await http.get(
           mode == false ? _dateStore.yesterdayUrl : _dateStore.dayBeforeUrl);
@@ -39,18 +40,21 @@ class Networker {
             'Requesting for: ${mode == false ? _dateStore.yesterdayUrl : _dateStore.dayBeforeUrl}');
 
         if (data.statusCode == 200) {
-          precious = data.body;
-
-          date = jsonDecode(precious)['data']['date'];
-          deaths = jsonDecode(precious)['data']['deaths'];
-          lastUpdate = jsonDecode(precious)['data']['last_update'];
-          recovered = jsonDecode(precious)['data']['recovered'];
-          active = jsonDecode(precious)['data']['active'];
-          fatalityRate = jsonDecode(precious)['data']['fatality_rate'];
-          confirmed = jsonDecode(precious)['data']['confirmed'];
-          deathDiff = jsonDecode(precious)['data']['deaths_diff'];
-          recovDiff = jsonDecode(precious)['data']['recovered_diff'];
-          activeDiff = jsonDecode(precious)['data']['active_diff'];
+          String precious = data.body;
+          _dataStore.updateData(
+            datePassedIn: jsonDecode(precious)['data']['date'],
+            deathsPassedIn: jsonDecode(precious)['data']['deaths'],
+            lastUpdatePassedIn: jsonDecode(precious)['data']['last_update'],
+            recoveredPassedIn: jsonDecode(precious)['data']['recovered'],
+            activePassedIn: jsonDecode(precious)['data']['active'],
+            fatalityRatePassedIn: jsonDecode(precious)['data']['fatality_rate'],
+            confirmedPassedIn: jsonDecode(precious)['data']['confirmed'],
+            deathDiffPassedIn: jsonDecode(precious)['data']['deaths_diff'],
+            recovDiffPassedIn: jsonDecode(precious)['data']['recovered_diff'],
+            confirmedDiffPassedIn: jsonDecode(precious)['data']
+                ['confirmed_diff'],
+            activeDiffPassedIn: jsonDecode(precious)['data']['active_diff'],
+          );
         } else {
           print(data.statusCode);
         }
@@ -65,8 +69,6 @@ class Networker {
     try {
       http.Response data = await http.get(
           mode == false ? _dateStore.yesterdayUrl : _dateStore.dayBeforeUrl);
-
-      // print(jsonDecode(data.body)['data'].toString() == '[]');
 
       if (jsonDecode(data.body)['data'].toString() == '[]') {
         /// data was null, possibly because the api was not updated
@@ -94,13 +96,18 @@ class Networker {
     Navigator.pushNamed(context, UIBuilder.id);
   }
 
-  Future<void> refresh({BuildContext context, bool mode}) async {
-    await getData(context, mode);
+  void handlerWithoutPush({BuildContext context, bool mode}) async {
+    await testModule(context, mode);
   }
+
+  // Future<void> refresh({BuildContext context, bool mode}) async {
+  //   await getData(context, mode);
+  // }
 
   Future<void> fineTunedUrlSearch(
       BuildContext context, String dateToGet, String state) async {
     final _appSettings = Provider.of<AppSettings>(context, listen: false);
+    final _dataStore = Provider.of<DataStore>(context, listen: false);
 
     String finalUrl =
         'https://covid-api.com/api/reports?date=$dateToGet&q=India&iso=IND&region_province=$state';
@@ -110,18 +117,22 @@ class Networker {
     http.Response data = await http.get(finalUrl);
 
     if (data.statusCode == 200) {
-      precious = data.body;
+      String precious = data.body;
 
-      date = jsonDecode(precious)['data'][0]['date'];
-      deaths = jsonDecode(precious)['data'][0]['deaths'];
-      lastUpdate = jsonDecode(precious)['data'][0]['last_update'];
-      recovered = jsonDecode(precious)['data'][0]['recovered'];
-      active = jsonDecode(precious)['data'][0]['active'];
-      fatalityRate = jsonDecode(precious)['data'][0]['fatality_rate'];
-      confirmed = jsonDecode(precious)['data'][0]['confirmed'];
-      deathDiff = jsonDecode(precious)['data'][0]['deaths_diff'];
-      recovDiff = jsonDecode(precious)['data'][0]['recovered_diff'];
-      activeDiff = jsonDecode(precious)['data'][0]['active_diff'];
+      _dataStore.updateData(
+        datePassedIn: jsonDecode(precious)['data'][0]['date'],
+        deathsPassedIn: jsonDecode(precious)['data'][0]['deaths'],
+        lastUpdatePassedIn: jsonDecode(precious)['data'][0]['last_update'],
+        recoveredPassedIn: jsonDecode(precious)['data'][0]['recovered'],
+        activePassedIn: jsonDecode(precious)['data'][0]['active'],
+        confirmedDiffPassedIn: jsonDecode(precious)['data'][0]
+            ['confirmed_diff'],
+        fatalityRatePassedIn: jsonDecode(precious)['data'][0]['fatality_rate'],
+        confirmedPassedIn: jsonDecode(precious)['data'][0]['confirmed'],
+        deathDiffPassedIn: jsonDecode(precious)['data'][0]['deaths_diff'],
+        recovDiffPassedIn: jsonDecode(precious)['data'][0]['recovered_diff'],
+        activeDiffPassedIn: jsonDecode(precious)['data'][0]['active_diff'],
+      );
 
       print('$state on $dateToGet');
 

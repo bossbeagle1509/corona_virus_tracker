@@ -131,7 +131,7 @@ class _NavDrawerState extends State<NavDrawer> {
               padding: const EdgeInsets.all(5.0),
               child: Center(
                 child: Text(
-                  'Version: 1.2.0',
+                  'Version: 1.3.0',
                   style: controlledDrawerStyle(
                       textColor: _appSettings.textColorMode, fontSize: 10),
                 ),

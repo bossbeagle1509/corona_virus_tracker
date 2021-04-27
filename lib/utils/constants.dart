@@ -16,14 +16,14 @@ const kData = TextStyle(
 
 /// all variables
 
-String date;
-String lastUpdate;
-int deaths;
-String precious;
-int recovered;
-int active;
-double fatalityRate;
-int confirmed;
-int deathDiff;
-int activeDiff;
-int recovDiff;
+// String date;
+// String lastUpdate;
+// int deaths;
+// String precious;
+// int recovered;
+// int active;
+// double fatalityRate;
+// int confirmed;
+// int deathDiff;
+// int activeDiff;
+// int recovDiff;
